@@ -13,16 +13,38 @@
         <link rel="stylesheet" href="Styles/ahorcado.css"/>
     </head>
     <body>
-        <h1>Juego de Ahorcado</h1>
-        <div>
-            <div id="letras-usadas"></div>
-        </div>
-        <div id="contenedor-palabras"></div>
+        <<div class="juego-container">
+            <div id="info-juego">
+                <h1>Juego del Ahorcado</h1>
 
-        <button id="inicio" >Inicio</button>
-        <input type="text" id="letra" maxlength="1" placeholder="Ingresa una letra">
-        <button id="verificar">Verificar letra</button>
-        <button id="pausa">Pausa</button>
-        <button id="reiniciar">Reiniciar</button>
+                <p>Cronómetro: <span id="cronometro">00:00</span></p>
+
+                <div class="botones">
+                    <button id="btn-iniciar">Iniciar</button>
+                    <button id="btn-pausar">Pausar</button>
+                    <button id="btn-reiniciar">Reiniciar</button>
+                </div>
+
+                <div id="pistas">
+                    <p id="pista1"></p>
+                    <p id="pista2"></p>
+                    <p id="pista3"></p>
+                </div>
+
+                <p id="palabra-oculta"></p>
+
+                <p>Letras incorrectas: <span id="letras-incorrectas"></span></p>
+                <p id="intentos">Intentos restantes: 6</p>
+
+                <input type="text" id="letra" maxlength="1" placeholder="Ingresa una letra">
+                <button id="btn-verificar">Probar</button>
+
+                <p id="resultado"></p>
+            </div>
+
+            <div id="muñeco-container">
+                <img id="muñeco" src="img/Ahorcado.png" alt="Muñeco del Ahorcado">
+            </div>
+        </div>
     </body>
 </html>
