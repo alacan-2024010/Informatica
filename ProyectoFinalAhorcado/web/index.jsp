@@ -11,18 +11,19 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>Juego de Ahorcado</title>
         <link rel="stylesheet" href="Styles/ahorcado.css"/>
+        
     </head>
     <body>
-        <<div class="juego-container">
+        <div class="juego-container">
             <div id="info-juego">
                 <h1>Juego del Ahorcado</h1>
 
                 <p>Cronómetro: <span id="cronometro">00:00</span></p>
 
                 <div class="botones">
-                    <button id="btn-iniciar">Iniciar</button>
-                    <button id="btn-pausar">Pausar</button>
-                    <button id="btn-reiniciar">Reiniciar</button>
+                    <button id="inicio" onclick="comenzar()">Iniciar</button>
+                    <button id="btn-pausar" >Pausar</button>
+                    <button id="btn-reiniciar" onclick="reiniciar()">Reiniciar</button>
                 </div>
 
                 <div id="pistas">
@@ -36,9 +37,8 @@
                 <p>Letras incorrectas: <span id="letras-incorrectas"></span></p>
                 <p id="intentos">Intentos restantes: 6</p>
 
-                <input type="text" id="letra" maxlength="1" placeholder="Ingresa una letra">
-                <button id="btn-verificar">Probar</button>
-
+                <input type="text" id="letra" maxlength="1" placeholder="Letra">
+                <button id="btn-verificar" onclick="verificar()">Verificar</button>
                 <p id="resultado"></p>
             </div>
 
@@ -46,5 +46,6 @@
                 <img id="muñeco" src="img/Ahorcado.png" alt="Muñeco del Ahorcado">
             </div>
         </div>
+        <script src="js/ahorcado.js"></script>
     </body>
 </html>
