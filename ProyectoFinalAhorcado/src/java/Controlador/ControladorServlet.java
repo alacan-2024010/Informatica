@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Arrays;
+import java.util.List;
 
 /**
  *
@@ -33,19 +34,14 @@ public class ControladorServlet extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
-        try (PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet ControladorServlet</title>");            
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>Servlet ControladorServlet at " + request.getContextPath() + "</h1>");
-            out.println("</body>");
-            out.println("</html>");
-        }
+            String menu = request.getParameter("menu");
+            String accion = request.getParameter("accion");
+            
+            if (menu.equals("Principal")) {
+                List listaPalabras = palabraDAO.listar();
+                request.setAttribute("palabras", listaPalabras);
+                request.getRequestDispatcher("ahorcado.jsp").forward(request, response);
+            }
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -60,18 +56,7 @@ public class ControladorServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        // Obtener palabra aleatoria desde la BD
-        Palabra palabra = palabraDAO.obtenerPalabraAleatoria();
-
-        // Mandar palabra y pistas a la vista (JSP)
-        request.setAttribute("palabra", palabra.getPalabra());
-        request.setAttribute("pista1", palabra.getPista1());
-        request.setAttribute("pista2", palabra.getPista2());
-        request.setAttribute("pista3", palabra.getPista3());
-
-
-        // Redirigir al JSP que muestra el juego
-        request.getRequestDispatcher("ahorcado.jsp").forward(request, response);
+        processRequest(request, response);
     }
 
     /**

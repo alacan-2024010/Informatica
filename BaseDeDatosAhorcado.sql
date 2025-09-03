@@ -36,11 +36,9 @@ call sp_InsertarPalabras ("PELICULA", "Forma de entretenimiento", "Puede ser de 
 
 
 DELIMITER $$
-create procedure sp_ObtenerPalabraAleatoria()
+create procedure sp_ListarPalabras()
 	begin
-		select palabra, pistaUno, pistaDos, pistaTres from Palabras
-			order by rand()
-				limit 1;
+		select palabra, pistaUno, pistaDos, pistaTres from Palabras;
 	end $$
 DELIMITER ;
-call sp_ObtenerPalabraAleatoria();
+call sp_ListarPalabras();
