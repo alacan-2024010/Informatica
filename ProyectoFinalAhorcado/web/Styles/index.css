@@ -1,0 +1,76 @@
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, #1e3c72, #2a5298);
+    color: #f0f0f0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+}
+
+.login-contendor {
+    background-color: rgba(0, 0, 0, 0.6);
+    padding: 40px;
+    border-radius: 15px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+    max-width: 400px;
+    width: 100%;
+    text-align: center;
+}
+
+.login-contendor h2 {
+    font-size: 2rem;
+    margin-bottom: 10px;
+    color: #ffd700;
+}
+
+.login-contendor p {
+    font-size: 1rem;
+    margin-bottom: 20px;
+    color: #ddd;
+}
+
+
+.login-contendor input {
+    width: 100%;
+    padding: 12px;
+    margin: 10px 0;
+    border-radius: 8px;
+    border: 2px solid #fff;
+    background: rgba(255,255,255,0.1);
+    color: #fff;
+    font-size: 1rem;
+    outline: none;
+    transition: border 0.3s ease, background 0.3s ease;
+}
+
+.login-contendor input::placeholder {
+    color: #ccc;
+}
+
+.login-contendor input:focus {
+    border: 2px solid #00b4d8;
+    background: rgba(255,255,255,0.2);
+}
+
+
+.login-contendor button {
+    width: 100%;
+    padding: 12px;
+    margin-top: 15px;
+    font-size: 1rem;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: all 0.3s ease;
+    color: #fff;
+    background-color: #0077b6;
+}
+
+.login-contendor button:hover {
+    background-color: #00b4d8;
+    transform: scale(1.05);
+}
