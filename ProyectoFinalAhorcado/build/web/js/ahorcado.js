@@ -18,20 +18,43 @@ const imagen = document.getElementById("muñeco");
 const cronometroEl = document.getElementById("cronometro");
 const btnPausar = document.getElementById("btn-pausar");
 
-function comenzar() {
+
+async function cargarPalabraDesdeBD() {
+    try {
+        const respuesta = await fetch("ControladorAhorcado?action=obtenerPalabras", {
+            headers: { "Accept": "application/json" }
+        });
+        if (!respuesta.ok) throw new Error("No se pudo obtener palabras del servidor");
+
+        const data = await respuesta.json();
+        if (!Array.isArray(data) || data.length === 0) {
+            throw new Error("No hay palabras en la base de datos");
+        }
+
+        const obj = data[Math.floor(Math.random() * data.length)];
+        palabraElegida = (obj.palabra || obj.Palabra || "").toUpperCase();
+        if (!palabraElegida) throw new Error("El objeto recibido no contiene la palabra");
+
+        espacios = Array(palabraElegida.length).fill("_");
+        palabraOculta.textContent = espacios.join(" ");
+
+        pista1.textContent = "Pista No.1: " + (obj.pistaUno || obj.pista || "");
+        pista2.textContent = "Pista No.2: " + (obj.pistaDos || "");
+        pista3.textContent = "Pista No.3: " + (obj.pistaTres || "");
+    } catch (err) {
+        console.error(err);
+        alert("⚠️ " + err.message);
+    }
+}
+
+async function comenzar() {
     if (!palabraElegida) {
-        if (typeof palabraBD !== "undefined" && palabraBD) {
-            palabraElegida = palabraBD.toUpperCase();
-            const pistas = pistasBD;
-            espacios = Array(palabraElegida.length).fill("_");
-            palabraOculta.textContent = espacios.join(" ");
-            pista1.textContent = "Pista No.1: " + pistas[0];
-            pista2.textContent = "Pista No.2: " + pistas[1];
-            pista3.textContent = "Pista No.3: " + pistas[2];
-        } else {
-            // fallback: usar array local
+        await cargarPalabraDesdeBD();
+
+        if (!palabraElegida) {
+            // fallback si no hay BD
             const palabraAleatoria = palabrasAhorcado[Math.floor(Math.random() * palabrasAhorcado.length)];
-            palabraElegida = palabraAleatoria.palabra;
+            palabraElegida = palabraAleatoria.palabra.toUpperCase();
             espacios = Array(palabraElegida.length).fill("_");
             palabraOculta.textContent = espacios.join(" ");
             pista1.textContent = "Pista No.1: " + palabraAleatoria.pistas[0];
@@ -59,11 +82,13 @@ function reiniciar() {
     pista2.textContent = "";
     pista3.textContent = "";
     imagen.src = "img/Ahorcado.png";
-    
+
     tiempoRestante = 300;
     cronometroEl.textContent = tiempoRestante;
     juegoEnPausa = false;
     btnPausar.textContent = "Pausar";
+
+    comenzar();
 }
 
 function verificar() {
@@ -91,10 +116,12 @@ function verificar() {
 
     if (!espacios.includes("_")) {
         alert("¡Ganaste!");
+        reiniciar();
     }
 
     if (errores === 6) {
         alert("¡Perdiste! La palabra era: " + palabraElegida);
+        reiniciar();
     }
 }
 
@@ -110,24 +137,11 @@ function actualizarCronometro() {
 }
 
 function iniciarCronometro() {
-    temporizador = setInterval(actualizarCronometro, 2000);
+    clearInterval(temporizador);
+    temporizador = setInterval(actualizarCronometro, 1000);
 }
 
 function pausarJuego() {
     juegoEnPausa = !juegoEnPausa;
     btnPausar.textContent = juegoEnPausa ? "Reanudar" : "Pausar";
 }
-
-
-const  palabrasAhorcado = [
-        {palabra: "PROGRAMADOR", pistas: ["Escribe código", "Trabaja con software", "Conoce lenguajes"]},
-        {palabra: "ELEFANTE", pistas: ["Animal de gran tamaño", "Tiene trompa", "Vive en África y Asia"]},
-        {palabra: "VEHICULO", pistas: ["Se usa para transportarse", "Tiene ruedas", "Puede ser coche, moto o camión"]},
-        {palabra: "GUATEMALA", pistas: ["Es un país en Centroamérica", "Tiene volcanes", "Su capital es Ciudad de Guatemala"]},
-        {palabra: "DESAYUNO", pistas: ["Es la primera comida del día", "Suele incluir café o jugo", "Comida matutina"]},
-        {palabra: "INTERNET", pistas: ["Red global de comunicaciones", "Se usa para navegar", "Conecta computadoras en todo el mundo"]},
-        {palabra: "TELEVISIÓN", pistas: ["Es un medio de comunicación", "Tiene canales", "Se usa para ver programas y películas"]},
-        {palabra: "COMPUTADORA", pistas: ["Herramienta electrónica", "Tiene teclado y pantalla", "Se usa para navegar y trabajar"]},
-        {palabra: "IMPRESORA", pistas: ["Dispositivo de salida", "Imprime documentos", "Puede ser de tinta o láser"]},
-        {palabra: "PELICULA", pistas: ["Forma de entretenimiento", "Puede ser de cine o video", "Se proyecta en una pantalla grande"]}
-];

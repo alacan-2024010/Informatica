@@ -13,12 +13,18 @@ public class PalabraDAO {
     PreparedStatement ps;
     ResultSet rs;
     Conexion cn = new Conexion();
+    
+     private Connection connection;
 
+    public PalabraDAO(Connection connection) {
+        this.connection = connection;
+    }
+    
     public List<Palabra> listar() {
         List<Palabra> lista = new ArrayList<>();
-        String sql = "SELECT * FROM palabra";
+        String sql = "SELECT * FROM Palabras";
         try {
-            con = cn.getConexion();
+            con = cn.Conexion();
             ps = con.prepareStatement(sql);
             rs = ps.executeQuery();
 

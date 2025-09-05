@@ -33,7 +33,9 @@ call sp_InsertarPalabras("TELEVISIÓN", "Es un medio de comunicación", "Tiene c
 call sp_InsertarPalabras ("COMPUTADORA", "Herramienta electrónica", "Tiene teclado y pantalla", "Se usa para navegar y trabajar");
 call sp_InsertarPalabras ("IMPRESORA", "Dispositivo de salida", "Imprime documentos", "Puede ser de tinta o láser");
 call sp_InsertarPalabras ("PELICULA", "Forma de entretenimiento", "Puede ser de cine o video", "Se proyecta en una pantalla grande");
-
+CALL sp_InsertarPalabras ("BICICLETA", "Medio de transporte", "Tiene dos ruedas", "Se impulsa con pedales");
+CALL sp_InsertarPalabras ("GUITARRA", "Instrumento musical", "Tiene cuerdas", "Se toca con las manos o pua");
+CALL sp_InsertarPalabras ("VOLCAN", "Accidente geográfico", "Expulsa lava", "Puede estar activo o inactivo");
 
 DELIMITER $$
 create procedure sp_ListarPalabras()
@@ -42,3 +44,5 @@ create procedure sp_ListarPalabras()
 	end $$
 DELIMITER ;
 call sp_ListarPalabras();
+
+select * from Palabras;

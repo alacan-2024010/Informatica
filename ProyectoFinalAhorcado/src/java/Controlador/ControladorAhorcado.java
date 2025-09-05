@@ -1,98 +1,77 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
- */
 package Controlador;
 
-import Modelo.Palabra;
-import Modelo.PalabraDAO;
-import com.google.gson.Gson;
 import java.io.IOException;
-import java.io.PrintWriter;
+import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.List;
-import java.util.Random;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
+import Config.Conexion;
+import Modelo.Palabra;
+import Modelo.PalabraDAO;
 /**
  *
- * @author Francisco
+ * @author PC
  */
 @WebServlet(name = "ControladorAhorcado", urlPatterns = {"/ControladorAhorcado"})
 public class ControladorAhorcado extends HttpServlet {
-
-    /**
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
-     * methods.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
-   protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        response.setContentType("application/json;charset=UTF-8");
-        PrintWriter out = response.getWriter();
-        
-        PalabraDAO palabraDAO = new PalabraDAO();
-        List<Palabra> palabras = palabraDAO.listar();
-        
-        if (palabras != null && !palabras.isEmpty()) {
-            Random random = new Random();
-            Palabra palabraAleatoria = palabras.get(random.nextInt(palabras.size()));
-            
-            Gson gson = new Gson();
-            String json = gson.toJson(palabraAleatoria);
-            
-            out.print(json);
-        } else {
-            out.print("{\"error\": \"No hay palabras en la base de datos\"}");
-        }
-        
-        out.flush();
-    }
-
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
-    /**
-     * Handles the HTTP <code>GET</code> method.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
+    
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        
+        String action = request.getParameter("action");
+        
+        if ("obtenerPalabras".equals(action)) {
+            obtenerPalabras(request, response);
+        } else {
+            // Redirigir a la página del juego
+            request.getRequestDispatcher("/ahorcado.jsp").forward(request, response);
+        }
     }
-
-    /**
-     * Handles the HTTP <code>POST</code> method.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
+    
+    private void obtenerPalabras(HttpServletRequest request, HttpServletResponse response) 
+            throws ServletException, IOException {
+        
+        // Usar tu clase de conexión
+        Conexion conn = new Conexion();
+        Connection connection = conn.Conexion();
+        PalabraDAO dao = new PalabraDAO(connection);
+        List<Palabra> palabras = dao.listar();
+        // Construir JSON manualmente
+        StringBuilder json = new StringBuilder();
+        json.append("[");
+        for (int i = 0; i < palabras.size(); i++) {
+            Palabra palabra = palabras.get(i);
+            json.append("{");
+            json.append("\"codigoPalabra\":").append(palabra.getCodigoPalabra()).append(",");
+            json.append("\"palabra\":\"").append(palabra.getPalabra()).append("\",");
+            json.append("\"pistaUno\":\"").append(palabra.getPistaUno()).append("\",");
+            json.append("\"pistaDos\":\"").append(palabra.getPistaDos()).append("\",");
+            json.append("\"pistaTres\":\"").append(palabra.getPistaTres()).append("\"");
+            json.append("}");
+            
+            if (i < palabras.size() - 1) {
+                json.append(",");
+            }
+        }
+        json.append("]");
+        response.setContentType("application/json");
+        response.setCharacterEncoding("UTF-8");
+        response.getWriter().write(json.toString());
+    }
+    
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        doGet(request, response);
     }
-
-    /**
-     * Returns a short description of the servlet.
-     *
-     * @return a String containing servlet description
-     */
+    
     @Override
     public String getServletInfo() {
-        return "Short description";
-    }// </editor-fold>
-
+        return "Servlet para el juego del ahorcado";
+    }
 }

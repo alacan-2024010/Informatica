@@ -47,14 +47,6 @@
                 <img id="muñeco" src="img/Ahorcado.png" alt="Muñeco del Ahorcado">
             </div>
         </div>
-        <script>
-            const palabraBD = "${palabra.texto}";
-            const pistasBD = [
-                "${palabra.pista1}",
-                "${palabra.pista2}",
-                "${palabra.pista3}"
-            ];
-        </script>
         <script src="js/ahorcado.js"></script>
     </body>
 </html>
