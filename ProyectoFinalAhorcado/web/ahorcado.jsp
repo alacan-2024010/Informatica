@@ -28,9 +28,9 @@
                 </div>
 
                 <div id="pistas">
-                    <p id="pista1"></p>
-                    <p id="pista2"></p>
-                    <p id="pista3"></p>
+                    <p id="pistaUno"></p>
+                    <p id="pistaDos"></p>
+                    <p id="pistaTres"></p>
                 </div>
 
                 <p id="palabra-oculta"></p>
@@ -47,6 +47,14 @@
                 <img id="muñeco" src="img/Ahorcado.png" alt="Muñeco del Ahorcado">
             </div>
         </div>
+        <script>
+            const palabraBD = "${palabra.texto}";
+            const pistasBD = [
+                "${palabra.pista1}",
+                "${palabra.pista2}",
+                "${palabra.pista3}"
+            ];
+        </script>
         <script src="js/ahorcado.js"></script>
     </body>
 </html>

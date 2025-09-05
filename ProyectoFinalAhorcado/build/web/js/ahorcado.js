@@ -1,16 +1,3 @@
-const  palabrasAhorcado = [
-        {palabra: "PROGRAMADOR", pistas: ["Escribe código", "Trabaja con software", "Conoce lenguajes"]},
-        {palabra: "ELEFANTE", pistas: ["Animal de gran tamaño", "Tiene trompa", "Vive en África y Asia"]},
-        {palabra: "VEHICULO", pistas: ["Se usa para transportarse", "Tiene ruedas", "Puede ser coche, moto o camión"]},
-        {palabra: "GUATEMALA", pistas: ["Es un país en Centroamérica", "Tiene volcanes", "Su capital es Ciudad de Guatemala"]},
-        {palabra: "DESAYUNO", pistas: ["Es la primera comida del día", "Suele incluir café o jugo", "Comida matutina"]},
-        {palabra: "INTERNET", pistas: ["Red global de comunicaciones", "Se usa para navegar", "Conecta computadoras en todo el mundo"]},
-        {palabra: "TELEVISIÓN", pistas: ["Es un medio de comunicación", "Tiene canales", "Se usa para ver programas y películas"]},
-        {palabra: "COMPUTADORA", pistas: ["Herramienta electrónica", "Tiene teclado y pantalla", "Se usa para navegar y trabajar"]},
-        {palabra: "IMPRESORA", pistas: ["Dispositivo de salida", "Imprime documentos", "Puede ser de tinta o láser"]},
-        {palabra: "PELICULA", pistas: ["Forma de entretenimiento", "Puede ser de cine o video", "Se proyecta en una pantalla grande"]}
-];
-
 let palabraElegida = "";
 let espacios = [];
 let letrasMalas = [];
@@ -21,9 +8,9 @@ let tiempoRestante = 300;
 let temporizador;
 let juegoEnPausa = false;
 
-const pista1 = document.getElementById("pista1");
-const pista2 = document.getElementById("pista2");
-const pista3 = document.getElementById("pista3");
+const pista1 = document.getElementById("pistaUno");
+const pista2 = document.getElementById("pistaDos");
+const pista3 = document.getElementById("pistaTres");
 const palabraOculta = document.getElementById("palabra-oculta");
 const letrasIncorrectasEl = document.getElementById("letras-incorrectas");
 const intentosEl = document.getElementById("intentos");
@@ -33,14 +20,25 @@ const btnPausar = document.getElementById("btn-pausar");
 
 function comenzar() {
     if (!palabraElegida) {
-        const palabraAleatoria = palabrasAhorcado[Math.floor(Math.random() * palabrasAhorcado.length)];
-        palabraElegida = palabraAleatoria.palabra;
-        espacios = Array(palabraElegida.length).fill("_");
-        palabraOculta.textContent = espacios.join(" ");
-        pista1.textContent = "Pista No.1: " + palabraAleatoria.pistas[0];
-        pista2.textContent = "Pista No.2: " + palabraAleatoria.pistas[1];
-        pista3.textContent = "Pista No.3: " + palabraAleatoria.pistas[2];
-        
+        if (typeof palabraBD !== "undefined" && palabraBD) {
+            palabraElegida = palabraBD.toUpperCase();
+            const pistas = pistasBD;
+            espacios = Array(palabraElegida.length).fill("_");
+            palabraOculta.textContent = espacios.join(" ");
+            pista1.textContent = "Pista No.1: " + pistas[0];
+            pista2.textContent = "Pista No.2: " + pistas[1];
+            pista3.textContent = "Pista No.3: " + pistas[2];
+        } else {
+            // fallback: usar array local
+            const palabraAleatoria = palabrasAhorcado[Math.floor(Math.random() * palabrasAhorcado.length)];
+            palabraElegida = palabraAleatoria.palabra;
+            espacios = Array(palabraElegida.length).fill("_");
+            palabraOculta.textContent = espacios.join(" ");
+            pista1.textContent = "Pista No.1: " + palabraAleatoria.pistas[0];
+            pista2.textContent = "Pista No.2: " + palabraAleatoria.pistas[1];
+            pista3.textContent = "Pista No.3: " + palabraAleatoria.pistas[2];
+        }
+
         tiempoRestante = 300;
         cronometroEl.textContent = tiempoRestante;
         iniciarCronometro();
@@ -112,10 +110,24 @@ function actualizarCronometro() {
 }
 
 function iniciarCronometro() {
-    temporizador = setInterval(actualizarCronometro, 1000);
+    temporizador = setInterval(actualizarCronometro, 2000);
 }
 
 function pausarJuego() {
     juegoEnPausa = !juegoEnPausa;
     btnPausar.textContent = juegoEnPausa ? "Reanudar" : "Pausar";
 }
+
+
+const  palabrasAhorcado = [
+        {palabra: "PROGRAMADOR", pistas: ["Escribe código", "Trabaja con software", "Conoce lenguajes"]},
+        {palabra: "ELEFANTE", pistas: ["Animal de gran tamaño", "Tiene trompa", "Vive en África y Asia"]},
+        {palabra: "VEHICULO", pistas: ["Se usa para transportarse", "Tiene ruedas", "Puede ser coche, moto o camión"]},
+        {palabra: "GUATEMALA", pistas: ["Es un país en Centroamérica", "Tiene volcanes", "Su capital es Ciudad de Guatemala"]},
+        {palabra: "DESAYUNO", pistas: ["Es la primera comida del día", "Suele incluir café o jugo", "Comida matutina"]},
+        {palabra: "INTERNET", pistas: ["Red global de comunicaciones", "Se usa para navegar", "Conecta computadoras en todo el mundo"]},
+        {palabra: "TELEVISIÓN", pistas: ["Es un medio de comunicación", "Tiene canales", "Se usa para ver programas y películas"]},
+        {palabra: "COMPUTADORA", pistas: ["Herramienta electrónica", "Tiene teclado y pantalla", "Se usa para navegar y trabajar"]},
+        {palabra: "IMPRESORA", pistas: ["Dispositivo de salida", "Imprime documentos", "Puede ser de tinta o láser"]},
+        {palabra: "PELICULA", pistas: ["Forma de entretenimiento", "Puede ser de cine o video", "Se proyecta en una pantalla grande"]}
+];

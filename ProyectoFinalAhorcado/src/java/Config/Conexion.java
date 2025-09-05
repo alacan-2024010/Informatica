@@ -5,19 +5,20 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 public class Conexion {
+    Connection con;
+    String url = "jdbc:mysql://localhost:3306/DB_Ahorcado?useSSL=false&serverTimezone=UTC";
+    String user = "admin";
+    String pass = "quintom";
 
-    public Connection Conexion() {
-        Connection conexion = null;
+    public Connection getConexion() {
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
-            conexion = DriverManager.getConnection(
-                    "jdbc:mysql://localhost:3306/DB_Ahorcado?useSSL=false&serverTimezone=UTC",
-                    "quintom",
-                    "admin"
-            );
-        } catch (ClassNotFoundException | SQLException e) {
-            e.printStackTrace();
+            con = DriverManager.getConnection(url, user, pass);
+        } catch (Exception e) {
+            System.out.println("Error en la conexión: " + e);
         }
-        return conexion;
+        return con;
     }
 }
+
+
